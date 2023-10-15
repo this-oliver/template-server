@@ -24,19 +24,24 @@ function setToken(value: string, config?: { expiresIn?: string }): string {
  * @returns text or `null` if invalid
  */
 function getToken(token: string): string | null {
-	const result: Jwt.Jwt = Jwt.verify(token, JWT_SECRET, { complete: true });
+	try {
+		const result: Jwt.Jwt = Jwt.verify(token, JWT_SECRET, { complete: true });
+    
+		let value: string | null;
+    
+		if (!result) {
+			value = null;
+		} else if(typeof result.payload === "string"){
+			value = result.payload;
+		} else {
+			value = result.payload.data;
+		}
   
-	let value: string | null;
-	
-	if (!result) {
-		value = null;
-	} else if(typeof result.payload === "string"){
-		value = result.payload;
-	} else {
-		value = result.payload.data.value;
+		return value;
+	} catch (error) {
+		return null;
 	}
 
-	return value;
 }
 
 /**

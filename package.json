@@ -2,7 +2,7 @@
   "name": "template-backend",
   "description": "template for a express & mongo backend stack",
   "repository": "this-oliver/template-vue3",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
