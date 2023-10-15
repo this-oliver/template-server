@@ -2,15 +2,14 @@ import Mongoose from "mongoose";
 import { hashPassword } from "../utils/crypto";
 import type { IUser } from "../types";
 
-const GENERIC_PROJECTION = "-password -salt";
+const GENERIC_PROJECTION = "-password";
 
 type UserDocument = IUser & Mongoose.Document;
 
 const UserModel = Mongoose.model("user", new Mongoose.Schema<IUser>(
 	{
 		username: { type: String, required: true, unique: true },
-		password: { type: String, required: true },
-		salt: { type: String }
+		password: { type: String, required: true }
 	},
 	{ timestamps: true })
 	.pre("save", async function(next) {
@@ -31,7 +30,6 @@ async function createUser(username: string, password: string, config?: { secrets
 
 	if(config?.secrets !== true) {
 		user.password = "";
-		user.salt = "";
 	}
 
 	return user;
@@ -69,7 +67,6 @@ async function updateUser(id: string, patch: Partial<IUser>, config?: { secrets:
 
 	if(!config?.secrets) {
 		patchedUser.password = "";
-		patchedUser.salt = "";
 	}
 
 	return patchedUser;
