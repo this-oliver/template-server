@@ -1,11 +1,66 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import database from '../database';
+import chai from 'chai';
+import ChaiAsPromised from 'chai-as-promised';
+import { createUser } from './user';
+import type { IUser } from '../types/index';
+
+const GENERIC_USER: IUser = {
+	username: "test",
+	password: "test"
+};
+
+chai.use(ChaiAsPromised);
+const expect = chai.expect;
+
 describe("User Data", () => {
+	before(async () => {
+		await database.connect();
+	});
+
+	after(async () => {
+		await database.drop();
+		await database.disconnect();
+	});
+
 	describe("createUser", () => {
-		it("should return a user");
-		it("should throw an error if username is not provided");
-		it("should throw an error if username is not unique");
-		it("should throw an error if password is not provided");
-		it("should convert plain text password to a hashed password");
-		it("should insert salt into the user document");
+		afterEach(async () => {
+			await database.drop();
+		});
+  
+		it("should return a user", async () => {
+			const user = await createUser(GENERIC_USER.username, GENERIC_USER.password);
+			expect(user).to.be.an("object");
+			expect(user).to.have.property("username");
+			expect(user).to.have.property("password");
+		});
+
+		it("should throw an error if username is not provided", async () => {
+			const missingUsername = createUser(null as any, GENERIC_USER.password);
+			expect(missingUsername).to.eventually.throw;
+		});
+
+		it("should throw an error if username is not unique", async () => {
+			await createUser(GENERIC_USER.username, GENERIC_USER.password);
+			const duplicateUser = createUser(GENERIC_USER.username, GENERIC_USER.password);
+			expect(duplicateUser).to.eventually.throw;
+		});
+
+		it("should throw an error if password is not provided", async () => {
+			const missingPassword = createUser(GENERIC_USER.username, null as any);
+			expect(missingPassword).to.eventually.throw;
+		});
+
+		it("should convert plain text password to a hashed password", async () => {
+			const user = await createUser(GENERIC_USER.username, GENERIC_USER.password, { secrets: true });
+			expect(user).to.have.property("password");
+			expect(user.password).to.not.equal(GENERIC_USER.password);
+		});
+
+		it("should insert salt into the user document", async () => {
+			const user = await createUser(GENERIC_USER.username, GENERIC_USER.password, { secrets: true });
+			expect(user).to.have.property("salt");
+		});
 	});
 
 	describe("getUserById", () => {

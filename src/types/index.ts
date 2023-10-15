@@ -8,7 +8,6 @@ interface BaseError {
 interface IUser {
   username: string;
   password: string;
-  salt: string;
 }
 
 interface ITodo {

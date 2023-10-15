@@ -1,4 +1,5 @@
 import Mongoose from "mongoose";
+import { hashPassword } from "../utils/crypto";
 import type { IUser } from "../types";
 
 const GENERIC_PROJECTION = "-password -salt";
@@ -7,14 +8,25 @@ type UserDocument = IUser & Mongoose.Document;
 
 const UserModel = Mongoose.model("user", new Mongoose.Schema<IUser>(
 	{
-		username: { type: String, required: true },
+		username: { type: String, required: true, unique: true },
 		password: { type: String, required: true },
 		salt: { type: String }
 	},
-	{ timestamps: true }
-));
+	{ timestamps: true })
+	.pre("save", async function(next) {
+		if(this.isModified("password")) {
+			const hash: string = hashPassword(this.password);
+			this.password = hash;
+		}
+		next();
+	})
+);
 
 async function createUser(username: string, password: string, config?: { secrets: boolean }): Promise<UserDocument> {
+	if(await getUserByUsername(username)) {
+		throw new Error(`User with username ${username} already exists`);
+	}
+  
 	const user = await UserModel.create(new UserModel({ username, password }));
 
 	if(config?.secrets !== true) {
