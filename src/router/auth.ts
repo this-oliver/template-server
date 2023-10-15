@@ -1,14 +1,16 @@
 import { login, renewAccessToken } from "../middleware/auth";
 import type { Route } from "./helpers/types";
 
+const BASE_PATH = "/auth";
+
 const routes: Route[] = [
 	{
-		path: "/auth/login",
+		path: `${BASE_PATH}/login`,
 		method: "post",
 		handler: login,
 	},
 	{
-		path: "/auth/refresh",
+		path: `${BASE_PATH}/renew`,
 		method: "post",
 		handler: renewAccessToken,
 	},

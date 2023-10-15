@@ -4,11 +4,13 @@ import { routes as userRoutes } from "./user";
 import { routes as todoRoutes } from "./todo";
 import { verifyAccessToken } from "../middleware/auth";
 
+const BASE_PATH = "/api";
+
 const router = Router();
 const routes = [...authRoutes, ...userRoutes, ...todoRoutes];
 
 routes.forEach((route) => {
-	const path = '/api' + route.path;
+	const path = `${BASE_PATH}${route.path}`;
   
 	if (route.protected) {
 		router[route.method](path, verifyAccessToken, route.handler);

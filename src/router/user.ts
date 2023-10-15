@@ -1,24 +1,26 @@
 import { postUser, getUserByUsername, indexUsers, patchUser } from "../middleware/user";
 import type { Route } from "./helpers/types";
 
+const BASE_PATH = "/users";
+
 const routes: Route[] = [
 	{
-		path: "/users",
+		path: BASE_PATH,
 		method: "post",
 		handler: postUser,
 	},
 	{
-		path: "/users",
+		path: BASE_PATH,
 		method: "get",
 		handler: indexUsers,
 	},
 	{
-		path: "/users/:username",
+		path: `${BASE_PATH}/:username`,
 		method: "get",
 		handler: getUserByUsername,
 	},
 	{
-		path: "/users/:username",
+		path: `${BASE_PATH}/:id`,
 		method: "patch",
 		handler: patchUser,
 		protected: true
