@@ -1,3 +1,6 @@
+# Package Files
+dist/
+
 # Logs
 logs
 *.log
@@ -18,13 +21,8 @@ jspm_packages/
 # Optional npm cache directory
 .npm
 
-# dotenv environment variables file
+# Dotenv environment variables file
 .env
 
-# testing
+# Testing
 ./coverage
-
-# project
-public/
-lib/
-dist/
