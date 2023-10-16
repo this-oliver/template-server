@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import { router } from "./router";
 
 const app = express();
 
@@ -15,6 +14,12 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 // configure routes
-app.use(router);
+const router = express.Router();
+router.get("/", function (req, res) {
+	res.send("Hello, world!");
+});
+router.get("*", function (req, res) {
+	res.status(404).send(`Path ${req.url} does not exist.`);
+});
 
 export default app;
