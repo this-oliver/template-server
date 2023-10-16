@@ -17,6 +17,9 @@ You can use this template to quickly create a backend for your own application. 
 # clone repo without git history
 npx degit <repo-url> <project-name>
 
+# (optional) clone specific branch in repo
+npx degit <repo-url>#<branch-name> <project-name>
+
 # enter project directory
 cd <project-name>
 
@@ -28,6 +31,12 @@ npm run dev
 ```
 
 This will create a new directory called `<project-name>` with the contents of this repository (except for the `.git` directory). In other words, it allows you to start with a clean git history (i.e. no commits).
+
+### Template Distributions
+
+You can also find other versions of this template for different use cases in the following branches:
+
+- [main-lite](https://github.com/this-oliver/template-backend/tree/main-lite): A lightweight version of this template without any database, data models or middleware. Just a server with a basic hello world route.
 
 ## Directory Structure
 
