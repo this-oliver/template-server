@@ -1,4 +1,4 @@
-import { register, login, renewAccessToken } from "../middleware/auth";
+import { register, login, refreshAccessToken } from "../middleware/auth";
 import type { Route } from "./helpers/types";
 
 const BASE_PATH = "/auth";
@@ -15,9 +15,9 @@ const routes: Route[] = [
 		handler: login,
 	},
 	{
-		path: `${BASE_PATH}/renew`,
+		path: `${BASE_PATH}/refresh`,
 		method: "post",
-		handler: renewAccessToken,
+		handler: refreshAccessToken,
 	},
 ];
 

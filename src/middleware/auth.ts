@@ -6,18 +6,21 @@ import type { AuthenticatedRequest } from "./helpers/types";
 import type { Request, Response, NextFunction } from "express";
 
 /**
- * Generates a pair of access and renew tokens from a user id.
+ * Generates a pair of access and refresh tokens from a user id.
  * 
  * - access token is derived from the user's id and expires after 24 hours
- * - renew token is derived from the access token and expires after 7 days
+ * - refresh token is derived from the access token and expires after 7 days
  */
-function _generateTokens(userId: string): { access: string, renew: string } {
+function _generateTokens(userId: string): { accessToken: string, refreshToken: string } {
 	if(!userId){
 		throw new Error('Missing user id.');
 	}
   
 	const accessToken: string = setToken(userId, { expiresIn: "24h" });
-	const renewToken: string = setToken(accessToken, { expiresIn: "7d" });
+	const refreshToken: string = setToken(accessToken, { expiresIn: "7d" });
+
+	return { accessToken, refreshToken };
+}
 
 /**
  * Returns a user and a pair of access and refresh tokens if created successfully.
@@ -35,29 +38,33 @@ async function register(req: Request, res: Response) {
 }
 
 /**
- * Returns a user and a pair of access and renew tokens is username and password are valid.
+ * Returns a user and a pair of access and refresh tokens is username and password are valid.
  * 
- * The access token is derived from the user's id and expires after 24 hours and the renew
+ * The access token is derived from the user's id and expires after 24 hours and the refresh
  * token is derived from the access token and expires after 7 days.
  */
 async function login(req: Request, res: Response) {
-	const user: UserDocument | null = await UserData.getUserByUsername(req.body.username, { secrets: true });
+	const { username, password } = req.body;
+  
+	const user: UserDocument | null = await UserData.getUserByUsername(username, { secrets: true });
 	if(!user){
 		return createErrorResponse(res, 'Invalid authentication credentials.', 401);
 	}
   
-	const match = comparePasswords(req.body.password, user?.password);
+	const match = comparePasswords(password, user?.password);
 	if (!match) {
 		return createErrorResponse(res, 'Invalid authentication credentials.', 401);
 	}
 
 	try {
-		const { access, renew } = _generateTokens(user._id);
-		return res.status(200).send({ user: user, tokens: { access, renew } });
+		// remove password from user object
+		user.password = "";
+    
+		const { accessToken, refreshToken } = _generateTokens(user._id);
+		return res.status(200).send({ user, accessToken, refreshToken });
 	} catch (error) {
 		return createErrorResponse(res, (error as Error).message, 500);
 	}
-
 }
 
 /**
@@ -84,21 +91,21 @@ async function verifyAccessToken(req: Request, res: Response, next: NextFunction
 }
 
 /**
- * Returns a new access and renew token if the renew token is valid.
+ * Returns a new access and refresh token if the refresh token is valid.
  */
-async function renewAccessToken(req: Request, res: Response) {
-	const { access, renew } = req.body.tokens;
+async function refreshAccessToken(req: Request, res: Response) {
+	const { accessToken, refreshToken } = req.body;
 
-	if(!access || !renew) {
+	if(!accessToken || !refreshToken) {
 		return createErrorResponse(res, 'Missing tokens.', 401);
 	}
 
-	const originalAccessToken: string | null = getToken(renew);
+	const originalAccessToken: string | null = getToken(refreshToken);
 	if(!originalAccessToken){
-		return createErrorResponse(res, 'Invalid renew token.', 401);
+		return createErrorResponse(res, 'Invalid refresh token.', 401);
 	}
 
-	if(originalAccessToken !== access){
+	if(originalAccessToken !== accessToken){
 		return createErrorResponse(res, 'Access token does not match original.', 401);
 	}
 
@@ -113,15 +120,16 @@ async function renewAccessToken(req: Request, res: Response) {
 	}
 
 	try {
-		const { access, renew } = _generateTokens(user._id);
-		return res.status(200).send({ tokens: { access, renew } });
+		const { accessToken, refreshToken } = _generateTokens(user._id);
+		return res.status(200).send({ accessToken, refreshToken });
 	} catch (error) {
 		return createErrorResponse(res, (error as Error).message, 500);
 	}
 }
 
 export {
+	register,
 	login,
 	verifyAccessToken,
-	renewAccessToken
+	refreshAccessToken
 };
