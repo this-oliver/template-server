@@ -3,16 +3,6 @@ import { createErrorResponse } from "./helpers/error";
 import type { AuthenticatedRequest } from "./helpers/types";
 import type { Request, Response } from "express";
 
-async function postUser(req: Request, res: Response) {
-	const { username, password } = req.body;
-	try {
-		const user = await UserData.createUser(username, password);
-		return res.status(201).send(user);
-	} catch (error) {
-		return createErrorResponse(res, (error as Error).message, 400);
-	}
-}
-
 async function getUserByUsername(req: Request, res: Response) {
 	const { username } = req.params;
 
@@ -48,4 +38,4 @@ async function patchUser(req: AuthenticatedRequest, res: Response) {
 	}
 }
 
-export { postUser, getUserByUsername, indexUsers, patchUser };
+export { getUserByUsername, indexUsers, patchUser };

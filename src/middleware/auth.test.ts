@@ -1,4 +1,11 @@
 describe('Auth Middleware', () => {
+	describe('register', () => {
+		it("should return 400 if username is not provided");
+		it("should return 400 if password is not provided");
+		it("should return 201 if user is created");
+		it("should return the created user");
+	});
+
 	describe('login', () => {
 		it("should return 400 if username is not provided");
 		it("should return 400 if password is not provided");

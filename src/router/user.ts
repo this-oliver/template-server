@@ -1,14 +1,9 @@
-import { postUser, getUserByUsername, indexUsers, patchUser } from "../middleware/user";
+import { getUserByUsername, indexUsers, patchUser } from "../middleware/user";
 import type { Route } from "./helpers/types";
 
 const BASE_PATH = "/users";
 
 const routes: Route[] = [
-	{
-		path: BASE_PATH,
-		method: "post",
-		handler: postUser,
-	},
 	{
 		path: BASE_PATH,
 		method: "get",

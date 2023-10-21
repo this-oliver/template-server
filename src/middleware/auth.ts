@@ -19,7 +19,19 @@ function _generateTokens(userId: string): { access: string, renew: string } {
 	const accessToken: string = setToken(userId, { expiresIn: "24h" });
 	const renewToken: string = setToken(accessToken, { expiresIn: "7d" });
 
-	return { access: accessToken, renew: renewToken };
+/**
+ * Returns a user and a pair of access and refresh tokens if created successfully.
+ */
+async function register(req: Request, res: Response) {
+	const { username, password } = req.body;
+	try {
+		const user = await UserData.createUser(username, password);
+		const { accessToken, refreshToken } = _generateTokens(user._id);
+    
+		return res.status(201).send({ user, accessToken, refreshToken });
+	} catch (error) {
+		return createErrorResponse(res, (error as Error).message, 400);
+	}
 }
 
 /**
