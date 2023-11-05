@@ -2,6 +2,10 @@ import Jwt from "jsonwebtoken";
 import Bcrypt from "bcrypt";
 import { JWT_SECRET } from "../config/env";
 
+if(!JWT_SECRET) {
+	throw new Error("Jwt secret not set. Set JWT_SECRET environment variable.");
+}
+
 /**
  * Returns a jwt token for the provided value
  * 

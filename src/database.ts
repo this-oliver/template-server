@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 import { DB_URI } from "./config/env";
 import { BaseError } from "./types";
 
+if(!DB_URI) {
+	throw new Error("Database URI not set. Set DB_URI environment variable.");
+}
+
 let connection: mongoose.Connection | undefined = undefined;
 
 /**
