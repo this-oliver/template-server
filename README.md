@@ -4,8 +4,11 @@
 
 This is a backend template for a REST API that provides a basic CRUD functionality for a personal todo list application with user authentication. It has the following components:
 
+- Database (MongoDB)
 - Data Models (Mongoose)
 - Middleware and Routing (Express)
+- File Uploads (Multer)
+- Storage (AWS S3, Google Cloud Storage, Custom)
 - Authentication (custom)
 - Testing (Mocha, Chai, Supertest)
 
@@ -24,10 +27,10 @@ npx degit <repo-url>#<branch-name> <project-name>
 cd <project-name>
 
 # install dependencies
-npm install
+pnpm install
 
 # start server in development mode
-npm run dev
+pnpm dev
 ```
 
 This will create a new directory called `<project-name>` with the contents of this repository (except for the `.git` directory). In other words, it allows you to start with a clean git history (i.e. no commits).
