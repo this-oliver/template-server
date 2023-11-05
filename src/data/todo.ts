@@ -9,7 +9,7 @@ const TodoModel = Mongoose.model("todo", new Mongoose.Schema<ITodo>(
 		author: { type: Schema.Types.ObjectId, ref: "user", required: true },
 		title: { type: String, required: true },
 		description: { type: String, default: "" },
-		completed: { type: Boolean, default: false },
+		completed: { type: Boolean, default: false }
 	},
 	{ timestamps: true }
 ));

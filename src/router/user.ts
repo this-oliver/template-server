@@ -18,7 +18,11 @@ const routes: Route[] = [
 		path: `${BASE_PATH}/:id`,
 		method: "patch",
 		handler: patchUser,
-		protected: true
+		protected: true,
+		upload: {
+			field: "image",
+			maxCount: 1,
+		},
 	},
 ];
 

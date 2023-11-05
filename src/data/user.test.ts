@@ -29,36 +29,36 @@ describe("User Data", () => {
 		});
   
 		it("should return a user", async () => {
-			const user = await createUser(GENERIC_USER.username, GENERIC_USER.password);
+			const user = await createUser({ username: GENERIC_USER.username, password: GENERIC_USER.password });
 			expect(user).to.be.an("object");
 			expect(user).to.have.property("username");
 			expect(user).to.have.property("password");
 		});
 
 		it("should throw an error if username is not provided", async () => {
-			const missingUsername = createUser(null as any, GENERIC_USER.password);
+			const missingUsername = createUser({ username: null as any, password: GENERIC_USER.password });
 			expect(missingUsername).to.eventually.throw;
 		});
 
 		it("should throw an error if username is not unique", async () => {
-			await createUser(GENERIC_USER.username, GENERIC_USER.password);
-			const duplicateUser = createUser(GENERIC_USER.username, GENERIC_USER.password);
+			await createUser({ username: GENERIC_USER.username, password: GENERIC_USER.password });
+			const duplicateUser = createUser({ username: GENERIC_USER.username, password: GENERIC_USER.password });
 			expect(duplicateUser).to.eventually.throw;
 		});
 
 		it("should throw an error if password is not provided", async () => {
-			const missingPassword = createUser(GENERIC_USER.username, null as any);
+			const missingPassword = createUser({ username: GENERIC_USER.username, password: null as any });
 			expect(missingPassword).to.eventually.throw;
 		});
 
 		it("should convert plain text password to a hashed password", async () => {
-			const user = await createUser(GENERIC_USER.username, GENERIC_USER.password, { secrets: true });
+			const user = await createUser({ username: GENERIC_USER.username, password: GENERIC_USER.password }, { secrets: true });
 			expect(user).to.have.property("password");
 			expect(user.password).to.not.equal(GENERIC_USER.password);
 		});
 
 		it("should insert salt into the user document", async () => {
-			const user = await createUser(GENERIC_USER.username, GENERIC_USER.password, { secrets: true });
+			const user = await createUser({ username: GENERIC_USER.username, password: GENERIC_USER.password }, { secrets: true });
 			expect(user).to.have.property("salt");
 		});
 	});
