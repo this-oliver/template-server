@@ -57,10 +57,11 @@ describe("User Data", () => {
 			expect(user.password).to.not.equal(GENERIC_USER.password);
 		});
 
-		it("should insert salt into the user document", async () => {
-			const user = await createUser({ username: GENERIC_USER.username, password: GENERIC_USER.password }, { secrets: true });
-			expect(user).to.have.property("salt");
-		});
+		//NOTE: This test is not needed because the bcrypt library embeds the salt in the hashed password
+		//it("should insert salt into the user document", async () => {
+		//	const user = await createUser({ username: GENERIC_USER.username, password: GENERIC_USER.password }, { secrets: true });
+		//	expect(user).to.have.property("salt");
+		//});
 	});
 
 	describe("getUserById", () => {
