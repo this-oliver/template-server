@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, json } from "express";
 import { routes as authRoutes } from "./auth";
 import { routes as userRoutes } from "./user";
 import { routes as todoRoutes } from "./todo";
@@ -13,6 +13,13 @@ const routes: Route[] = [...authRoutes, ...userRoutes, ...todoRoutes];
 
 routes.forEach((route) => {
 	const preMiddleware = [];
+
+	/**
+   * Parse request body as JSON
+   */
+	if (route.json !== false) {
+		preMiddleware.push(json());
+	}
 
 	/**
    * Verify access token and add authenticated user to request object. Returns 401 otherwise.
