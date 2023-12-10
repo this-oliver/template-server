@@ -15,10 +15,11 @@ async function _verifyAuthor(userId: string, todoId: string): Promise<boolean> {
 	}
 }
 
-async function postTodo (req: AuthenticatedRequest, res: Response) {
-	const { title, description } = req.body;
+async function postTodo (req: Request, res: Response) {
+	const authReq = req as AuthenticatedRequest;
+	const { title, description } = authReq.body;
 	try {
-		const todo = await TodoData.createTodo (req.user._id, title, description);
+		const todo = await TodoData.createTodo ((authReq as AuthenticatedRequest).user._id, title, description);
 		return res.status (201).send (todo);
 	} catch (error) {
 		return createErrorResponse (res, (error as Error).message, 400);
@@ -55,25 +56,27 @@ async function indexTodosByAuthor (req: Request, res: Response) {
 	}
 }
 
-async function patchTodo (req: AuthenticatedRequest, res: Response) {
-	const { id } = req.params;
+async function patchTodo (req: Request, res: Response) {
+	const authReq = req as AuthenticatedRequest;
+	const { id } = authReq.params;
 
-	if(!await _verifyAuthor(req.user._id, id)){
+	if(!await _verifyAuthor(authReq.user._id, id)){
 		return createErrorResponse(res, 'You are not authorized to perform this action.', 401);
 	}
 
 	try {
-		const todo = await TodoData.updateTodo (id, req.body);
+		const todo = await TodoData.updateTodo (id, authReq.body);
 		return res.status (200).send (todo);
 	} catch (error) {
 		return createErrorResponse (res, (error as Error).message, 400);
 	}
 }
 
-async function deleteTodo (req: AuthenticatedRequest, res: Response) {
-	const { id } = req.params;
+async function deleteTodo (req: Request, res: Response) {
+	const authReq = req as AuthenticatedRequest;
+	const { id } = authReq.params;
 
-	if(!await _verifyAuthor(req.user._id, id)){
+	if(!await _verifyAuthor(authReq.user._id, id)){
 		return createErrorResponse(res, 'You are not authorized to perform this action.', 401);
 	}
 

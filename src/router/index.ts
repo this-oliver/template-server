@@ -6,8 +6,6 @@ import { verifyAccessToken } from "../middleware/auth";
 import { parseFile } from "./helpers/parser";
 import type { Route } from "./helpers/types";
 
-const BASE_PATH = "/api";
-
 const router = Router();
 const routes: Route[] = [...authRoutes, ...userRoutes, ...todoRoutes];
 
@@ -35,7 +33,7 @@ routes.forEach((route) => {
 		preMiddleware.push(parseFile(route.upload.field, { maxCount: route.upload.maxCount }));
 	}
 
-	const path = `${BASE_PATH}${route.path}`;
+	const path = `/api${route.path}`;
 	router[route.method](path, ...preMiddleware, route.handler);
 });
 

@@ -1,3 +1,5 @@
+import type { RequestHandler } from "express";
+
 interface Route {
   /**
    * The HTTP method of the route
@@ -12,7 +14,7 @@ interface Route {
   /**
    * The handler of the route
    */
-  handler: any;
+  handler: RequestHandler | RequestHandler[];
 
   /**
    * Parse the request body as JSON

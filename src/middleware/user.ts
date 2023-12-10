@@ -25,18 +25,20 @@ async function indexUsers(req: Request, res: Response) {
 	}
 }
 
-async function patchUser(req: AuthenticatedRequest, res: Response) {
-	const { id } = req.params;
+async function patchUser(req: Request, res: Response) {
+	const authReq = req as AuthenticatedRequest;
+  
+	const { id } = authReq.params;
 
-	if(req.user._id !== id){
+	if(authReq.user._id !== id){
 		return createErrorResponse(res, 'You are not authorized to perform this action.', 401);
 	}
 
 	let avatar: string | undefined = undefined;
 
-	if(req.file){
+	if(authReq.file){
 		try {
-			avatar = await (new BasicBucket({ endpoint: BUCKET_S3_URI })).uploadFile(req.file);
+			avatar = await (new BasicBucket({ endpoint: BUCKET_S3_URI })).uploadFile(authReq.file);
 		} catch (error) {
 			return createErrorResponse(res, `Failed to upload avatar (${(error as Error).message})`, 400);
       
@@ -44,7 +46,7 @@ async function patchUser(req: AuthenticatedRequest, res: Response) {
 	}
   
 	try {
-		const user = await UserData.updateUser(req.user._id, { ...req.body, avatar });
+		const user = await UserData.updateUser((authReq as AuthenticatedRequest).user._id, { ...authReq.body, avatar });
 		return res.status(200).send(user);
 	} catch (error) {
 		return createErrorResponse(res, (error as Error).message, 400);
