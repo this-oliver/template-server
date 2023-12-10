@@ -1,4 +1,5 @@
-import { register, login, refreshAccessToken } from "../middleware/auth";
+import { postUser } from "../middleware/user";
+import { login, refreshAccessToken } from "../middleware/auth";
 import type { Route } from "../types/infrastructure";
 
 const BASE_PATH = "/auth";
@@ -7,7 +8,7 @@ const routes: Route[] = [
 	{
 		path: `${BASE_PATH}/register`,
 		method: "post",
-		handler: register,
+		handler: postUser,
 		upload: {
 			field: "image",
 			maxCount: 1,
