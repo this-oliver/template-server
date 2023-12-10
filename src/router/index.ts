@@ -3,7 +3,7 @@ import { routes as authRoutes } from "./auth";
 import { routes as userRoutes } from "./user";
 import { routes as todoRoutes } from "./todo";
 import { verifyAccessToken } from "../middleware/auth";
-import { upload } from "./helpers/file-upload";
+import { parseFile } from "./helpers/parser";
 import type { Route } from "./helpers/types";
 
 const BASE_PATH = "/api";
@@ -25,7 +25,7 @@ routes.forEach((route) => {
    * Look for files in the request and add them to the request object.
    */
 	if(route.upload) {
-		preMiddleware.push(upload(route.upload.field, route.upload.maxCount));
+		preMiddleware.push(parseFile(route.upload.field, { maxCount: route.upload.maxCount }));
 	}
 
 	const path = `${BASE_PATH}${route.path}`;
