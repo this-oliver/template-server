@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import { DB_URI } from "./config/env";
+import { DATABASE_URL } from "./config/env";
 import { BaseError } from "./types/infrastructure";
 
-if(!DB_URI) {
-	throw new Error("Database URI not set. Set DB_URI environment variable.");
+if(!DATABASE_URL) {
+	throw new Error("Database URI not set. Set DATABASE_URL environment variable.");
 }
 
 let connection: mongoose.Connection | undefined = undefined;
@@ -12,7 +12,7 @@ let connection: mongoose.Connection | undefined = undefined;
  * Connect to database
  */
 async function connect(): Promise<typeof mongoose> {
-	const database = await mongoose.connect(DB_URI);
+	const database = await mongoose.connect(DATABASE_URL);
 	connection = database.connection;
 
 	return database;
