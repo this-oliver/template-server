@@ -1,3 +1,7 @@
+/**
+ * This file provides a set of cryptographic functions for hashing and comparing passwords. 
+ */
+
 import Jwt from "jsonwebtoken";
 import Bcrypt from "bcrypt";
 import { JWT_SECRET } from "../config/env";

@@ -1,3 +1,8 @@
+/**
+ * This file provides a set of functions for parsing special
+ * types of data like files or multipart form data.
+ */
+
 import multer from 'multer';
 import type { RequestHandler } from 'express';
 

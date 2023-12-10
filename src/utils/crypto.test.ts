@@ -1,12 +1,10 @@
 import { expect } from 'chai';
 import { setToken, getToken, hashPassword, comparePasswords } from "./crypto";
 
-const JWT_SECRET = "secret";
-
 describe('Crypto Util', () => {
 
 	before(() => {
-		process.env.JWT_SECRET = JWT_SECRET;
+		process.env.JWT_SECRET = process.env.JWT_SECRET || 'test-secret';
 	});
 	
 	describe('setToken()', () => {

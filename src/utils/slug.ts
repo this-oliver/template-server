@@ -1,4 +1,9 @@
 /**
+ * This file provides a set of functions for generating and validating 
+ * [slugs](https://en.wikipedia.org/wiki/Clean_URL) which can be an user-friendly identifier alternative 
+ */
+
+/**
  * Returns a slug
  * 
  * @param {string} sample - text to be converted to slug

@@ -3,7 +3,7 @@ import { routes as authRoutes } from "./auth";
 import { routes as userRoutes } from "./user";
 import { routes as todoRoutes } from "./todo";
 import { verifyAccessToken } from "../middleware/auth";
-import { parseFile } from "./helpers/parser";
+import { parseFile } from "../utils/parser";
 import type { Route } from "../types/infrastructure";
 
 const router = Router();

@@ -1,3 +1,7 @@
+/**
+ * This file provides a set of functions for uploading and removing files from different storage providers.
+ */
+
 import awsSdk from "aws-sdk";
 import axios from "axios";
 import formData from "form-data";
