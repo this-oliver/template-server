@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { setToken, getToken, hashPassword, comparePasswords } from "./crypto";
+import { setToken, getToken, generateWebTokens, hashPassword, comparePasswords } from "./crypto";
 
 describe('Crypto Util', () => {
 
@@ -34,6 +34,43 @@ describe('Crypto Util', () => {
 			const now = Math.floor(Date.now() / 1000);
 			const difference = expiresIn - now;
 			expect(difference).to.equal(60 * 60);
+		});
+	});
+
+	describe('generateWebTokens()', () => {
+
+		function _extractExpiration(token: string): number {
+			const result = token.split('.')[1];
+			const decoded = Buffer.from(result, 'base64').toString('utf-8');
+			return JSON.parse(decoded).exp;
+		}
+		
+		it('should return an object with accessToken and refreshToken strings', () => {
+			const tokens = generateWebTokens('sample');
+
+			expect(tokens).to.be.an('object');
+			expect(tokens).to.have.property('accessToken');
+			expect(tokens).to.have.property('refreshToken');
+			expect(tokens.accessToken).to.be.a('string');
+			expect(tokens.refreshToken).to.be.a('string');
+		});
+
+		it('access token should expire in 24 hours by default', () => {
+			const { accessToken } = generateWebTokens('sample');
+			
+			const expiresIn = _extractExpiration(accessToken);
+			const now = Math.floor(Date.now() / 1000);
+			const difference = expiresIn - now;
+			expect(difference).to.equal(60 * 60 * 24);
+		});
+
+		it('refresh token should expire in 7 days by default', () => {
+			const { refreshToken } = generateWebTokens('sample');
+			
+			const expiresIn = _extractExpiration(refreshToken);
+			const now = Math.floor(Date.now() / 1000);
+			const difference = expiresIn - now;
+			expect(difference).to.equal(60 * 60 * 24 * 7);
 		});
 	});
 

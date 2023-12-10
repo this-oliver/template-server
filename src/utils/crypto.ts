@@ -53,6 +53,23 @@ function getToken(token: string): string | null {
 }
 
 /**
+ * Generates a pair of access and refresh tokens from a string value
+ * 
+ * - access token is derived from the string value and expires after 24 hours
+ * - refresh token is derived from the access token and expires after 7 days
+ */
+function generateWebTokens(value: string): { accessToken: string, refreshToken: string } {
+	if(!value){
+		throw new Error('Missing token generation value.');
+	}
+  
+	const accessToken: string = setToken(value, { expiresIn: "24h" });
+	const refreshToken: string = setToken(accessToken, { expiresIn: "7d" });
+
+	return { accessToken, refreshToken };
+}
+
+/**
  * Returns a hash of a value
  * 
  * @param value - plain text password
@@ -78,6 +95,7 @@ function comparePasswords(sample: string, hash: string): boolean {
 export {
 	setToken,
 	getToken,
+	generateWebTokens,
 	hashPassword,
 	comparePasswords
 };

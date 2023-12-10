@@ -1,28 +1,11 @@
 import * as UserData from "../data/user";
 import { BasicBucket } from "../utils/storage";
-import { setToken, getToken, comparePasswords } from "../utils/crypto";
+import { generateWebTokens, getToken, comparePasswords } from "../utils/crypto";
 import { BUCKET_S3_URI } from "../config/env";
 import { createErrorResponse } from "./helpers/error";
 import type { UserDocument } from "../data/user";
 import type { AuthenticatedRequest } from "../types/infrastructure";
 import type { Request, Response, NextFunction } from "express";
-
-/**
- * Generates a pair of access and refresh tokens from a user id.
- * 
- * - access token is derived from the user's id and expires after 24 hours
- * - refresh token is derived from the access token and expires after 7 days
- */
-function _generateTokens(userId: string): { accessToken: string, refreshToken: string } {
-	if(!userId){
-		throw new Error('Missing user id.');
-	}
-  
-	const accessToken: string = setToken(userId, { expiresIn: "24h" });
-	const refreshToken: string = setToken(accessToken, { expiresIn: "7d" });
-
-	return { accessToken, refreshToken };
-}
 
 /**
  * Returns a user and a pair of access and refresh tokens if created successfully.
@@ -43,7 +26,7 @@ async function register(req: Request, res: Response) {
   
 	try {
 		const user = await UserData.createUser({ username, password, avatar });
-		const { accessToken, refreshToken } = _generateTokens(user._id);
+		const { accessToken, refreshToken } = generateWebTokens(user._id);
     
 		return res.status(201).send({ user, accessToken, refreshToken });
 	} catch (error) {
@@ -74,7 +57,7 @@ async function login(req: Request, res: Response) {
 		// remove password from user object
 		user.password = "";
     
-		const { accessToken, refreshToken } = _generateTokens(user._id);
+		const { accessToken, refreshToken } = generateWebTokens(user._id);
 		return res.status(200).send({ user, accessToken, refreshToken });
 	} catch (error) {
 		return createErrorResponse(res, (error as Error).message, 500);
@@ -134,7 +117,7 @@ async function refreshAccessToken(req: Request, res: Response) {
 	}
 
 	try {
-		const { accessToken, refreshToken } = _generateTokens(user._id);
+		const { accessToken, refreshToken } = generateWebTokens(user._id);
 		return res.status(200).send({ accessToken, refreshToken });
 	} catch (error) {
 		return createErrorResponse(res, (error as Error).message, 500);
