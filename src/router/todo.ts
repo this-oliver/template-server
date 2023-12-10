@@ -1,5 +1,5 @@
 import { postTodo, getTodo, indexTodos, indexTodosByAuthor, patchTodo, deleteTodo } from "../middleware/todo";
-import type { Route } from "./helpers/types";
+import type { Route } from "../types/infrastructure";
 
 const routes: Route[] = [
 	{

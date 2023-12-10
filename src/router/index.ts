@@ -4,7 +4,7 @@ import { routes as userRoutes } from "./user";
 import { routes as todoRoutes } from "./todo";
 import { verifyAccessToken } from "../middleware/auth";
 import { parseFile } from "./helpers/parser";
-import type { Route } from "./helpers/types";
+import type { Route } from "../types/infrastructure";
 
 const router = Router();
 const routes: Route[] = [...authRoutes, ...userRoutes, ...todoRoutes];

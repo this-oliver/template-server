@@ -1,6 +1,6 @@
 import * as TodoData from '../data/todo';
 import { createErrorResponse } from './helpers/error';
-import type { AuthenticatedRequest } from './helpers/types';
+import type { AuthenticatedRequest } from '../types/infrastructure';
 import type { Request, Response } from 'express';
 
 async function _verifyAuthor(userId: string, todoId: string): Promise<boolean> {

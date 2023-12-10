@@ -4,7 +4,7 @@ import { setToken, getToken, comparePasswords } from "../utils/crypto";
 import { BUCKET_S3_URI } from "../config/env";
 import { createErrorResponse } from "./helpers/error";
 import type { UserDocument } from "../data/user";
-import type { AuthenticatedRequest } from "./helpers/types";
+import type { AuthenticatedRequest } from "../types/infrastructure";
 import type { Request, Response, NextFunction } from "express";
 
 /**

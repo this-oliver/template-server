@@ -1,6 +1,6 @@
 import Mongoose from "mongoose";
 import { Schema } from "mongoose";
-import type { ITodo } from "../types";
+import type { ITodo } from "../types/logic";
 
 type TodoDocument = ITodo & Mongoose.Document;
 

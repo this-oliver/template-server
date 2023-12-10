@@ -1,5 +1,5 @@
 import { getUserByUsername, indexUsers, patchUser } from "../middleware/user";
-import type { Route } from "./helpers/types";
+import type { Route } from "../types/infrastructure";
 
 const BASE_PATH = "/users";
 

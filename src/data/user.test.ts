@@ -3,7 +3,7 @@ import database from '../database';
 import chai from 'chai';
 import ChaiAsPromised from 'chai-as-promised';
 import { createUser } from './user';
-import type { IUser } from '../types/index';
+import type { IUser } from '../types/logic';
 
 const GENERIC_USER: IUser = {
 	username: "test",

@@ -2,7 +2,7 @@ import * as UserData from "../data/user";
 import { BasicBucket } from "../utils/storage";
 import { BUCKET_S3_URI } from "../config/env";
 import { createErrorResponse } from "./helpers/error";
-import type { AuthenticatedRequest } from "./helpers/types";
+import type { AuthenticatedRequest } from "../types/infrastructure";
 import type { Request, Response } from "express";
 
 async function getUserByUsername(req: Request, res: Response) {

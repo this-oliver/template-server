@@ -1,5 +1,5 @@
 import { register, login, refreshAccessToken } from "../middleware/auth";
-import type { Route } from "./helpers/types";
+import type { Route } from "../types/infrastructure";
 
 const BASE_PATH = "/auth";
 

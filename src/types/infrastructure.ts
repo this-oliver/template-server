@@ -1,6 +1,17 @@
-import type { RequestHandler } from "express";
+/**
+ * Types and interfaces that define the infrastructure of the application (i.e. routes, database, API, etc.)
+ * or extend libraries and frameworks
+ */
 
-interface Route {
+import type { Request, RequestHandler } from "express";
+import type { UserDocument } from "../data/user";
+
+export interface BaseError {
+  message: string;
+  status: number;
+}
+
+export interface Route {
   /**
    * The HTTP method of the route
    */
@@ -41,4 +52,6 @@ interface Route {
   };
 }
 
-export { Route };
+export interface AuthenticatedRequest extends Request {
+  user: UserDocument
+}
