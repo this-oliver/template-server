@@ -2,7 +2,7 @@
  * Types and interfaces for application logic (i.e. users, posts, etc.)
  */
 
-import { Types } from 'mongoose';
+import { Types } from "mongoose";
 
 export interface IUser {
   username: string;
