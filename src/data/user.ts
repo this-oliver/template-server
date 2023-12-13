@@ -1,6 +1,7 @@
 import Mongoose from "mongoose";
 import { hashPassword } from "../utils/crypto";
-import type { IUser } from "../types/logic";
+
+import type { User as IUser } from "../types/logic";
 
 const GENERIC_PROJECTION = "-password";
 
