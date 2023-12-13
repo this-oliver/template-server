@@ -1,39 +1,39 @@
-import { postTodo, getTodo, indexTodos, indexTodosByAuthor, patchTodo, deleteTodo } from "../middleware/todo";
+import * as TodoMiddleware from "../middleware/todo";
 import type { Route } from "../types/infrastructure";
 
 const routes: Route[] = [
 	{
 		path: "/todos",
 		method: "post",
-		handler: postTodo,
-		protected: true
+		protected: true,
+		handler: [TodoMiddleware.postTodo],
 	},
 	{
 		path: "/todos",
 		method: "get",
-		handler: indexTodos,
+		handler: [TodoMiddleware.indexTodos],
 	},
 	{
 		path: "/todos/:id",
 		method: "get",
-		handler: getTodo,
+		handler: [TodoMiddleware.getTodo],
 	},
 	{
 		path: "/todos/author/:author",
 		method: "get",
-		handler: indexTodosByAuthor,
+		handler: [TodoMiddleware.indexTodosByAuthor],
 	},
 	{
 		path: "/todos/:id",
 		method: "patch",
-		handler: patchTodo,
-		protected: true
+		protected: true,
+		handler: [TodoMiddleware.patchTodo],
 	},
 	{
 		path: "/todos/:id",
 		method: "delete",
-		handler: deleteTodo,
-		protected: true
+		protected: true,
+		handler: [TodoMiddleware.deleteTodo],
 	}
 ];
 

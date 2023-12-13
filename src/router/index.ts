@@ -34,7 +34,7 @@ routes.forEach((route) => {
 	}
 
 	const path = `/api${route.path}`;
-	router[route.method](path, ...preMiddleware, route.handler);
+	router[route.method](path, ...preMiddleware, ...route.handler);
 });
 
 router.get("/*", (req, res) => {

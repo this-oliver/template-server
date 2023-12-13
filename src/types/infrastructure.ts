@@ -25,7 +25,7 @@ export interface Route {
   /**
    * The handler of the route
    */
-  handler: RequestHandler | RequestHandler[];
+  handler: RequestHandler[];
 
   /**
    * Parse the request body as JSON

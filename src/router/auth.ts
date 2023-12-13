@@ -1,5 +1,5 @@
-import { postUser } from "../middleware/user";
-import { login, refreshAccessToken } from "../middleware/auth";
+import * as AuthMiddleware from "../middleware/auth";
+import * as UserMiddleware from "../middleware/user";
 import type { Route } from "../types/infrastructure";
 
 const BASE_PATH = "/auth";
@@ -8,17 +8,17 @@ const routes: Route[] = [
 	{
 		path: `${BASE_PATH}/register`,
 		method: "post",
-		handler: postUser
+		handler: [UserMiddleware.postUser]
 	},
 	{
 		path: `${BASE_PATH}/login`,
 		method: "post",
-		handler: login,
+		handler: [AuthMiddleware.login],
 	},
 	{
 		path: `${BASE_PATH}/refresh`,
 		method: "post",
-		handler: refreshAccessToken,
+		handler: [AuthMiddleware.refreshAccessToken],
 	},
 ];
 
