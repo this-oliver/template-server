@@ -8,11 +8,7 @@ const routes: Route[] = [
 	{
 		path: `${BASE_PATH}/register`,
 		method: "post",
-		handler: postUser,
-		upload: {
-			field: "image",
-			maxCount: 1,
-		},
+		handler: postUser
 	},
 	{
 		path: `${BASE_PATH}/login`,

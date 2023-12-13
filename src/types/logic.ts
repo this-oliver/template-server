@@ -7,7 +7,6 @@ import { Types } from 'mongoose';
 export interface IUser {
   username: string;
   password: string;
-  avatar?: string;
 }
 
 export interface ITodo {

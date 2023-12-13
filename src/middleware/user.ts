@@ -11,20 +11,9 @@ import type { Request, Response } from "express";
  */
 async function postUser(req: Request, res: Response) {
 	const { username, password } = req.body;
-
-	let avatar: string | undefined = undefined;
-
-	if(req.file){
-		try {
-			avatar = await (new BasicBucket({ endpoint: BUCKET_S3_URI })).uploadFile(req.file);
-		} catch (error) {
-			return createErrorResponse(res, `Failed to upload avatar (${(error as Error).message})`, 400);
-      
-		}
-	}
   
 	try {
-		const user = await UserData.createUser({ username, password, avatar });
+		const user = await UserData.createUser({ username, password });
 		const { accessToken, refreshToken } = generateWebTokens(user.id);
     
 		return res.status(201).send({ user, accessToken, refreshToken });
