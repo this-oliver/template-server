@@ -18,7 +18,7 @@ const DATABASE_URL: string = process.env.DATABASE_URL as string;
 
 // Security config
 const JWT_SECRET: string = process.env.JWT_SECRET as string;
-const ALLOWED_ORIGINS: string = process.env.ALLOWED_ORIGINS as string;
+const ALLOWED_ORIGINS: string = process.env.ALLOWED_ORIGINS as string || "*";
 
 // Storage config
 const BUCKET_NAME: string = process.env.BUCKET_NAME as string;

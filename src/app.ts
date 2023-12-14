@@ -32,7 +32,7 @@ app.use(cors({
 			return callback(null, isAllowed);
 		}
 	},
-	methods: ["GET", "POST", "PUT", "DELETE"],
+	methods: ["GET", "POST", "PATCH", "DELETE"],
 	allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
