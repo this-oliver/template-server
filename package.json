@@ -1,7 +1,7 @@
 {
   "name": "template-backend",
   "description": "template for a express & mongo backend stack",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "repository": "this-oliver/template-backend",
   "engines": {
     "node": ">=18.18.0",

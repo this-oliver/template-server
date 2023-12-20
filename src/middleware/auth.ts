@@ -49,7 +49,7 @@ async function verifyAccessToken(req: Request, res: Response, next: NextFunction
 		return createErrorResponse(res, 'Invalid auth token.', 401);
 	}
   
-	const user: UserDocument | null = await UserData.getUserById(decodedToken);
+	const user: UserDocument | null = await UserData.getUserById(decodedToken, { secrets: true });
 	if(!user){
 		return createErrorResponse(res, `User with id ${decodedToken} missing.`, 401);
 	}
@@ -95,8 +95,35 @@ async function refreshAccessToken(req: Request, res: Response) {
 	}
 }
 
+/**
+ * Updates a user's password
+ */
+async function patchUserPassword(req:Request, res: Response) {
+	const authReq = req as AuthenticatedRequest;
+	const { id } = authReq.params;
+	const { oldPassword, newPassword } = req.body;
+
+	// check if user is updating their own password
+	if(authReq.user.id !== id){
+		return createErrorResponse(res, 'You are not allowed to update another user\'s password.', 401);
+	}
+
+	// check if old password matches current password
+	if(!comparePasswords(oldPassword, authReq.user.password)){
+		return createErrorResponse(res, 'Old password does not match current password.', 401);
+	}
+
+	try {
+		const user = await UserData.updateUserPassword(id, newPassword);
+		return res.status(200).send(user);
+	} catch (error) {
+		return createErrorResponse(res, (error as Error).message, 400);
+	}
+}
+
 export {
 	login,
 	verifyAccessToken,
-	refreshAccessToken
+	refreshAccessToken,
+	patchUserPassword
 };

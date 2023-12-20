@@ -62,7 +62,24 @@ async function updateUser(id: string, patch: Partial<IUser>, config?: { secrets:
 	}
 
 	user.username = patch.username || user.username;
-	user.password = patch.password || user.password;
+
+	const patchedUser = await user.save();
+
+	if(!config?.secrets) {
+		patchedUser.password = "";
+	}
+
+	return patchedUser;
+}
+
+async function updateUserPassword(id: string, password: string, config?: { secrets: boolean}): Promise<UserDocument | null> {
+	const user = await getUserById(id, { secrets: true });
+
+	if(!user){
+		throw new Error(`User with id ${id} not found`);
+	}
+
+	user.password = password || user.password;
 
 	const patchedUser = await user.save();
 
@@ -91,5 +108,6 @@ export {
 	getUserByUsername,
 	indexUsers,
 	updateUser,
+	updateUserPassword,
 	deleteUser
 };
