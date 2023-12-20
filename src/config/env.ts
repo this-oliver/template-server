@@ -1,9 +1,9 @@
 import dotenv from "dotenv";
 
-if (process.env.NODE_ENV === "testing") {
+if (process.env.NODE_ENV === "test") {
 	// get .env.test file
 	dotenv.config({ path: ".env.test" });
-} else if (process.env.NODE_ENV === "development") {
+} else if (process.env.NODE_ENV === "dev") {
 	// get .env.development file
 	dotenv.config({ path: ".env.dev" });
 } else {
@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === "testing") {
 }
 
 // General config
-const NODE_ENV = process.env.NODE_ENV || "production";
+const NODE_ENV = process.env.NODE_ENV || "prod";
 const PORT = process.env.PORT || "3000";
 const DATABASE_URL: string = process.env.DATABASE_URL as string;
 

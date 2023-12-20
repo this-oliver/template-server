@@ -14,5 +14,3 @@ app.listen(PORT, function () {
 	console.log(`Database: ${DATABASE_URL}\n`);
 	console.log(`Allowd origins: ${ALLOWED_ORIGINS}\n`);
 });
-
-export default app;
